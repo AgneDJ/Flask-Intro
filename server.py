@@ -18,7 +18,18 @@ AWESOMENESS = [
 def start_here():
     """Home page."""
 
-    return "<!doctype html><html>Hi! This is the home page.</html>"
+    return """
+    <!doctype html>
+    <html> 
+      <head>
+        <title>Start Here</title>
+      </head>
+      <body>
+        <a href= http://localhost:5000/hello>HelloPage</a> 
+        <h1>Hi! This is the home page.</h1> 
+      </body>
+    </html>
+       """
 
 
 @app.route('/hello')
@@ -33,8 +44,13 @@ def say_hello():
       </head>
       <body>
         <h1>Hi There!</h1>
-        <form action="/greet">
+        <form action="/greet" method='GET'>
           What's your name? <input type="text" name="person">
+          <p>Choose a compliment: </p> 
+          <input type="radio" id="compliment" name="compliment" value="beautiful">
+          <label for="compliment">Beautiful</label><br>
+          <input type="radio" id="compliment" name="compliment" value="nice">
+          <label for="compliment">Nice</label><br>
           <input type="submit" value="Submit">
         </form>
       </body>
@@ -47,8 +63,8 @@ def greet_person():
     """Get user by name."""
 
     player = request.args.get("person")
-
-    compliment = choice(AWESOMENESS)
+    compliment = request.args.get("compliment")
+    diss = request.args.get("diss")
 
     return f"""
     <!doctype html>
@@ -57,7 +73,33 @@ def greet_person():
         <title>A Compliment</title>
       </head>
       <body>
-        Hi, {player}! I think you're {compliment}!
+        Hi, {player}! I think you're {diss}!
+      </body>
+    </html>
+    """
+
+
+@app.route('/diss')
+def say_diss():
+    """Say diss and prompt for user's name."""
+
+    return """
+    <!doctype html>
+    <html>
+      <head>
+        <title>Hi There...</title>
+      </head>
+      <body>
+        <h1>Hi There...</h1>
+        <form action="/greet" method='GET'>
+          What's your name? <input type="text" name="person">
+          <p>Choose word :( : </p> 
+          <input type="radio" id="diss" name="diss" value="mean person">
+          <label for="diss">Mean</label><br>
+          <input type="radio" id="diss" name="diss" value="anoying person">
+          <label for="diss">Anoying</label><br>
+          <input type="submit" value="Submit">
+        </form>
       </body>
     </html>
     """
